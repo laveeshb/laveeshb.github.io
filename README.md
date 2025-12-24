@@ -1,5 +1,5 @@
 # laveeshb.github.io
 
-Personal/Professional website for Laveesh B.
+Personal website for Laveesh Bansal.
 
-🚧 **Under Construction** 🚧
+🔗 **[laveeshb.github.io](https://laveeshb.github.io)**
