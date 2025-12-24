@@ -7,7 +7,7 @@ tags: [mcp, logic-apps, typescript, ai]
 excerpt: "How I built an MCP server that lets AI assistants interact with Azure Logic Apps."
 ---
 
-I recently built an [MCP server for Azure Logic Apps](https://github.com/laveeshb/logicapps-mcp) that lets AI assistants like Claude and GitHub Copilot query workflows, run history, and more. [Model Context Protocol](https://modelcontextprotocol.io/) is the glue that makes this possible — it gives AI tools a structured way to discover and call external services.
+I recently built an [MCP server](https://github.com/laveeshb/logicapps-mcp) for [Azure Logic Apps](https://learn.microsoft.com/azure/logic-apps/logic-apps-overview) that lets AI assistants like Claude and GitHub Copilot query workflows, run history, and more. [Model Context Protocol](https://modelcontextprotocol.io/) is the glue that makes this possible — it gives AI tools a structured way to discover and call external services.
 
 Here's how the server works and some design decisions along the way.
 
@@ -135,20 +135,6 @@ The server exposes 18 read-only tools:
 | Debugging | `get_action_repetitions`, `get_scope_repetitions`, `get_action_request_history`, `get_expression_traces` |
 | Connections | `get_connections` |
 | Diagnostics | `get_host_status` |
-
-## What I Learned
-
-<div class="callout callout-tip">
-<p><strong>MCP is simpler than expected.</strong> The protocol is minimal — just tool definitions and a request/response pattern over stdio. Most of the complexity is in your actual tool implementations.</p>
-</div>
-
-<div class="callout callout-tip">
-<p><strong>Azure CLI auth is underrated.</strong> Reusing CLI tokens means zero credential management. Users don't need to create service principals or store secrets.</p>
-</div>
-
-<div class="callout callout-note">
-<p><strong>TypeScript + Node works well for this.</strong> The <code>@modelcontextprotocol/sdk</code> handles all the protocol details. You just register handlers and implement your logic.</p>
-</div>
 
 ## Try It
 
