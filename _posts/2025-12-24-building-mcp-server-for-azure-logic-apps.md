@@ -46,7 +46,7 @@ const transport = new StdioServerTransport();
 await server.connect(transport);
 ```
 
-MCP uses stdio for communication — the AI assistant spawns the server process and communicates via stdin/stdout. No HTTP server, no ports to configure.
+MCP uses `stdio` for communication — the AI assistant spawns the server process and communicates via `stdin/stdout`. No HTTP server, no ports to configure.
 
 ## Tool Registration
 
@@ -84,9 +84,9 @@ export async function getAzureCliToken(): Promise<string> {
 
 This keeps dependencies minimal and leverages the authentication the user already has. If you're logged into Azure CLI, the MCP server just works.
 
-## Calling Azure Resource Manager
+## Calling the Azure APIs
 
-All Logic Apps operations go through the ARM REST API. The HTTP client is a thin wrapper that handles auth injection and pagination:
+Most operations go through the ARM REST API. The HTTP client is a thin wrapper that handles auth injection and pagination:
 
 ```typescript
 export async function armRequest<T>(path: string): Promise<T> {
@@ -106,6 +106,8 @@ export async function armRequest<T>(path: string): Promise<T> {
 
 The server supports Azure Public, Government, and China clouds — just swap the endpoint configuration.
 
+For Standard Logic Apps, some operations (like host diagnostics) call the app directly using the workflow management API rather than ARM.
+
 ## Handling Both SKUs
 
 Logic Apps comes in two flavors: Consumption (serverless, single workflow) and Standard (App Service-based, multiple workflows). The API paths differ:
@@ -124,7 +126,17 @@ Once configured, you can ask your AI assistant things like:
 - "What's the definition of the order-processing workflow?"
 - "Get the trigger callback URL for the HTTP trigger"
 
-The AI has 18 read-only tools covering subscriptions, workflows, runs, actions, triggers, connections, and more.
+The server exposes 23 read-only tools:
+
+| Category | Tools |
+|----------|-------|
+| Discovery | `list_subscriptions`, `list_logic_apps`, `list_workflows` |
+| Definitions | `get_workflow_definition`, `get_workflow_swagger`, `list_workflow_versions`, `get_workflow_version` |
+| Triggers | `get_workflow_triggers`, `get_trigger_history`, `get_trigger_callback_url` |
+| Run History | `list_run_history`, `search_runs`, `get_run_details`, `get_run_actions`, `get_action_io` |
+| Debugging | `get_action_repetitions`, `get_scope_repetitions`, `get_action_request_history`, `get_expression_traces` |
+| Connections | `get_connections`, `get_connection_details`, `test_connection` |
+| Diagnostics | `get_host_status` |
 
 ## What I Learned
 
@@ -137,7 +149,7 @@ The AI has 18 read-only tools covering subscriptions, workflows, runs, actions, 
 </div>
 
 <div class="callout callout-note">
-<p><strong>TypeScript + Node works well for this.</strong> The @modelcontextprotocol/sdk handles all the protocol details. You just register handlers and implement your logic.</p>
+<p><strong>TypeScript + Node works well for this.</strong> The <code>@modelcontextprotocol/sdk</code> handles all the protocol details. You just register handlers and implement your logic.</p>
 </div>
 
 ## Try It
