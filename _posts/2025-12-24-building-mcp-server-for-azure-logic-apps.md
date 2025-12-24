@@ -7,7 +7,7 @@ tags: [mcp, logic-apps, typescript, ai]
 excerpt: "How I built an MCP server that lets AI assistants interact with Azure Logic Apps."
 ---
 
-I recently built an [MCP server](https://github.com/laveeshb/logicapps-mcp) for [Azure Logic Apps](https://learn.microsoft.com/azure/logic-apps/logic-apps-overview) that lets AI assistants like Claude and GitHub Copilot query workflows, run history, and more. [Model Context Protocol](https://modelcontextprotocol.io/) is the glue that makes this possible — it gives AI tools a structured way to discover and call external services.
+I recently built an [MCP server](https://github.com/laveeshb/logicapps-mcp){:target="_blank"} for [Azure Logic Apps](https://learn.microsoft.com/azure/logic-apps/logic-apps-overview){:target="_blank"} that lets AI assistants like Claude and GitHub Copilot query workflows, run history, and more. [Model Context Protocol](https://modelcontextprotocol.io/){:target="_blank"} is the glue that makes this possible — it gives AI tools a structured way to discover and call external services.
 
 Here's how the server works and some design decisions along the way.
 
@@ -146,4 +146,4 @@ npm install -g github:laveeshb/logicapps-mcp
 
 Add it to Claude Desktop or VS Code Copilot, and you can start querying your Logic Apps with natural language.
 
-The code is on [GitHub](https://github.com/laveeshb/logicapps-mcp) — contributions welcome.
+The code is on [GitHub](https://github.com/laveeshb/logicapps-mcp){:target="_blank"} — contributions welcome.
