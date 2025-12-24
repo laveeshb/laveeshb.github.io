@@ -138,7 +138,7 @@ The server exposes 18 read-only tools:
 
 ## Try It
 
-If you work with Logic Apps, give it a try:
+To get started:
 
 ```bash
 npm install -g github:laveeshb/logicapps-mcp
