@@ -84,9 +84,9 @@ export async function getAzureCliToken(): Promise<string> {
 
 This keeps dependencies minimal and leverages the authentication the user already has. If you're logged into Azure CLI, the MCP server just works.
 
-## Calling the Azure APIs
+## Calling Azure Resource Manager
 
-Most operations go through the ARM REST API. The HTTP client is a thin wrapper that handles auth injection and pagination:
+All Logic Apps operations go through the ARM REST API. The HTTP client is a thin wrapper that handles auth injection and pagination:
 
 ```typescript
 export async function armRequest<T>(path: string): Promise<T> {
@@ -106,8 +106,6 @@ export async function armRequest<T>(path: string): Promise<T> {
 
 The server supports Azure Public, Government, and China clouds — just swap the endpoint configuration.
 
-For Standard Logic Apps, some operations (like host diagnostics) call the app directly using the workflow management API rather than ARM.
-
 ## Handling Both SKUs
 
 Logic Apps comes in two flavors: Consumption (serverless, single workflow) and Standard (App Service-based, multiple workflows). The API paths differ:
@@ -126,16 +124,16 @@ Once configured, you can ask your AI assistant things like:
 - "What's the definition of the order-processing workflow?"
 - "Get the trigger callback URL for the HTTP trigger"
 
-The server exposes 23 read-only tools:
+The server exposes 18 read-only tools:
 
 | Category | Tools |
 |----------|-------|
 | Discovery | `list_subscriptions`, `list_logic_apps`, `list_workflows` |
-| Definitions | `get_workflow_definition`, `get_workflow_swagger`, `list_workflow_versions`, `get_workflow_version` |
+| Definitions | `get_workflow_definition`, `get_workflow_swagger`, `list_workflow_versions` |
 | Triggers | `get_workflow_triggers`, `get_trigger_history`, `get_trigger_callback_url` |
-| Run History | `list_run_history`, `search_runs`, `get_run_details`, `get_run_actions`, `get_action_io` |
+| Run History | `list_run_history`, `get_run_details`, `get_run_actions` |
 | Debugging | `get_action_repetitions`, `get_scope_repetitions`, `get_action_request_history`, `get_expression_traces` |
-| Connections | `get_connections`, `get_connection_details`, `test_connection` |
+| Connections | `get_connections` |
 | Diagnostics | `get_host_status` |
 
 ## What I Learned
