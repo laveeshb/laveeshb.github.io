@@ -22,6 +22,25 @@ permalink: /about/
         
         <p>Based in Seattle. Opinions are my own.</p>
 
+        <h2>Projects</h2>
+        <div class="project-grid">
+            <a href="https://github.com/laveeshb/logicapps-mcp" target="_blank" rel="noopener noreferrer" class="project-card">
+                <h3>Logic Apps MCP Server</h3>
+                <p>MCP server for Azure Logic Apps</p>
+                <span class="tech-tag">TypeScript</span>
+            </a>
+            <a href="https://github.com/laveeshb/azure-functions-sqs-extension" target="_blank" rel="noopener noreferrer" class="project-card">
+                <h3>Azure Functions SQS Extension</h3>
+                <p>Multi-language Azure Functions bindings for Amazon SQS</p>
+                <span class="tech-tag">C#</span>
+            </a>
+            <a href="https://github.com/laveeshb/krakenly" target="_blank" rel="noopener noreferrer" class="project-card">
+                <h3>Krakenly</h3>
+                <p>A fully local, privacy-focused AI assistant that runs entirely on your machine</p>
+                <span class="tech-tag">Python</span>
+            </a>
+        </div>
+
         <h2>Education</h2>
         <ul class="education-list">
             <li>
@@ -33,8 +52,5 @@ permalink: /about/
                 Bachelor of Technology (2002 – 2006)
             </li>
         </ul>
-
-        <h2>Connect</h2>
-        <p>Find me on <a href="https://github.com/laveeshb">GitHub</a> and <a href="https://www.linkedin.com/in/laveeshbansal">LinkedIn</a>.</p>
     </div>
 </div>

@@ -1,10 +1,10 @@
 ---
 layout: post
 title: "Welcome to My Blog"
-date: 2024-12-24
+date: 2025-12-24
 categories: [general]
 tags: [intro, blogging]
-excerpt: "First post on my new Jekyll blog. Here's what I plan to write about."
+excerpt: "First post on my blog. Here's what I plan to write about."
 ---
 
 Welcome to my blog! After years of building distributed systems and cloud infrastructure, I've finally set up a space to share thoughts, learnings, and the occasional deep dive into technical topics.
@@ -20,12 +20,10 @@ I plan to write about:
 
 ## Why Now?
 
-After a decade at Microsoft working on Azure Resource Manager and Logic Apps, I've accumulated a lot of knowledge that might be useful to others. Writing helps me think more clearly, and hopefully some of these posts will help someone else avoid the pitfalls I've encountered.
+After spending years building cloud infrastructure, I figured it might be worth writing down some of the things I've learned along the way. Writing helps me think more clearly, and maybe some of these posts will help someone else avoid the same mistakes I've made.
 
 ## Stay Tuned
 
 I'll try to post regularly. No promises on frequency, but I'll aim for quality over quantity.
-
-If you have topics you'd like me to cover, feel free to reach out on [LinkedIn](https://www.linkedin.com/in/laveeshbansal) or [GitHub](https://github.com/laveeshb).
 
 Thanks for reading!

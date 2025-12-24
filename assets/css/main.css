@@ -360,6 +360,17 @@ h2 {
     margin-top: 4rem;
 }
 
+/* Intro Section */
+.intro {
+    margin-bottom: 3rem;
+}
+
+.intro p {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
 .recent-posts .posts-list {
     gap: 1.5rem;
 }
@@ -513,6 +524,11 @@ h2 {
     padding: 2rem 1.5rem;
     border-top: 1px solid var(--border);
     text-align: center;
+}
+
+.site-footer .social-links {
+    justify-content: center;
+    margin-bottom: 1rem;
 }
 
 .site-footer p {
