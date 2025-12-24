@@ -7,7 +7,7 @@ tags: [mcp, logic-apps, typescript, ai]
 excerpt: "How I built an MCP server that lets AI assistants interact with Azure Logic Apps."
 ---
 
-I recently built [logicapps-mcp](https://github.com/laveeshb/logicapps-mcp), an MCP (Model Context Protocol) server that enables AI assistants like Claude and GitHub Copilot to interact with Azure Logic Apps. Here's how it works and some interesting design decisions along the way.
+I recently built an [MCP server for Azure Logic Apps](https://github.com/laveeshb/logicapps-mcp) that enables AI assistants like Claude and GitHub Copilot to query workflows, run history, and more. Here's how it works and some interesting design decisions along the way.
 
 ## What is MCP?
 
