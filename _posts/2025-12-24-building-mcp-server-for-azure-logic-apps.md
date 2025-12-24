@@ -32,7 +32,7 @@ Here's how the server works and some design decisions along the way.
   </table>
 </div>
 
-The server is surprisingly simple. Here's the entry point:
+Here's the entry point:
 
 ```typescript
 const server = new Server(
