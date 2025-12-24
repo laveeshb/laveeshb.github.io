@@ -1,0 +1,68 @@
+# Site settings
+title: Laveesh Bansal
+description: Software Architect building distributed systems at scale
+url: "https://laveeshbansal.com"
+baseurl: ""
+
+# Author
+author:
+  name: Laveesh Bansal
+  email: ""
+  avatar: "https://avatars.githubusercontent.com/u/11548738?v=4"
+  bio: "Software Architect at Microsoft. Building distributed systems at scale."
+  location: "Seattle, WA"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-github"
+      url: "https://github.com/laveeshb"
+    - label: "LinkedIn"
+      icon: "fab fa-linkedin"
+      url: "https://www.linkedin.com/in/laveeshbansal"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: /blog/:year/:month/:title/
+
+# Sass/SCSS
+sass:
+  sass_dir: _sass
+  style: compressed
+
+# Pagination (for blog)
+paginate: 10
+paginate_path: "/blog/page:num/"
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-paginate
+
+# Exclude from build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
+
+# Collections
+collections:
+  projects:
+    output: true
+    permalink: /projects/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "Laveesh Bansal"
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
