@@ -1,13 +1,13 @@
 :root {
-    --bg-primary: #0a0a0a;
-    --bg-secondary: #141414;
-    --bg-card: #1a1a1a;
-    --text-primary: #e5e5e5;
-    --text-secondary: #a3a3a3;
+    --bg-primary: #e5e5e5;
+    --bg-secondary: #d4d4d4;
+    --bg-card: #f5f5f5;
+    --text-primary: #171717;
+    --text-secondary: #404040;
     --text-muted: #737373;
-    --accent: #3b82f6;
-    --accent-hover: #60a5fa;
-    --border: #262626;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --border: #c4c4c4;
 }
 
 * {
@@ -32,7 +32,7 @@ body {
 .site-nav {
     position: sticky;
     top: 0;
-    background: rgba(10, 10, 10, 0.95);
+    background: rgba(229, 229, 229, 0.95);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
     z-index: 100;
@@ -246,7 +246,7 @@ h2 {
     display: inline-block;
     font-size: 0.75rem;
     color: var(--accent);
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(37, 99, 235, 0.1);
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
 }
@@ -556,12 +556,12 @@ footer p {
 }
 
 .callout-tip {
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(37, 99, 235, 0.08);
     border-color: var(--accent);
 }
 
 .callout-note {
-    background: rgba(163, 163, 163, 0.1);
+    background: rgba(120, 113, 108, 0.08);
     border-color: var(--text-muted);
 }
 
