@@ -13,6 +13,25 @@ Here's how the server works and some design decisions along the way.
 
 ## The Architecture
 
+<div class="architecture-diagram">
+  <table>
+    <tr>
+      <td><span class="box">AI Assistant</span></td>
+      <td><span class="arrow">⟷</span></td>
+      <td><span class="box">MCP Server</span></td>
+      <td><span class="arrow">⟷</span></td>
+      <td><span class="box">Azure Logic Apps</span></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td class="label">stdio</td>
+      <td></td>
+      <td class="label">REST API</td>
+      <td></td>
+    </tr>
+  </table>
+</div>
+
 The server is surprisingly simple. Here's the entry point:
 
 ```typescript
@@ -109,11 +128,17 @@ The AI has 18 read-only tools covering subscriptions, workflows, runs, actions, 
 
 ## What I Learned
 
-**MCP is simpler than expected.** The protocol is minimal — just tool definitions and a request/response pattern over stdio. Most of the complexity is in your actual tool implementations.
+<div class="callout callout-tip">
+<p><strong>MCP is simpler than expected.</strong> The protocol is minimal — just tool definitions and a request/response pattern over stdio. Most of the complexity is in your actual tool implementations.</p>
+</div>
 
-**Azure CLI auth is underrated.** Reusing CLI tokens means zero credential management. Users don't need to create service principals or store secrets.
+<div class="callout callout-tip">
+<p><strong>Azure CLI auth is underrated.</strong> Reusing CLI tokens means zero credential management. Users don't need to create service principals or store secrets.</p>
+</div>
 
-**TypeScript + Node works well for this.** The @modelcontextprotocol/sdk handles all the protocol details. You just register handlers and implement your logic.
+<div class="callout callout-note">
+<p><strong>TypeScript + Node works well for this.</strong> The @modelcontextprotocol/sdk handles all the protocol details. You just register handlers and implement your logic.</p>
+</div>
 
 ## Try It
 

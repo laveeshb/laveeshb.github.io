@@ -547,6 +547,77 @@ footer p {
     color: var(--text-muted);
 }
 
+/* Callout Boxes */
+.callout {
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    border-left: 4px solid;
+}
+
+.callout-tip {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: var(--accent);
+}
+
+.callout-note {
+    background: rgba(163, 163, 163, 0.1);
+    border-color: var(--text-muted);
+}
+
+.callout p {
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+.callout strong {
+    color: var(--text-primary);
+}
+
+/* Architecture Diagram */
+.architecture-diagram {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    overflow-x: auto;
+}
+
+.architecture-diagram table {
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+.architecture-diagram td {
+    padding: 0;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.architecture-diagram .box {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    padding: 0.75rem 1.25rem;
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    white-space: nowrap;
+}
+
+.architecture-diagram .arrow {
+    color: var(--accent);
+    font-size: 1.25rem;
+    padding: 0 0.75rem;
+}
+
+.architecture-diagram .label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding-top: 0.5rem;
+}
+
 /* Responsive */
 @media (max-width: 640px) {
     .nav-container {
