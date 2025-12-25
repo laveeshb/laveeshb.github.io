@@ -2,6 +2,7 @@
 layout: post
 title: "Welcome to My Blog"
 date: 2025-12-24
+order: 1
 categories: [general]
 tags: [intro, blogging]
 excerpt: "First post on my blog. Here's what I plan to write about."

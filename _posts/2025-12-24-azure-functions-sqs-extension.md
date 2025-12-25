@@ -2,6 +2,7 @@
 layout: post
 title: "Azure Functions Extension for Amazon SQS"
 date: 2025-12-24
+order: 2
 categories: [azure, aws]
 tags: [azure-functions, sqs, dotnet, serverless]
 excerpt: "An Azure Functions extension that lets you trigger functions from SQS queues and send messages back."
