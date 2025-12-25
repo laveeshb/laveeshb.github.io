@@ -2,6 +2,7 @@
 layout: post
 title: "Building an MCP Server for Azure Logic Apps"
 date: 2025-12-24
+order: 3
 categories: [azure]
 tags: [mcp, logic-apps, typescript, ai]
 excerpt: "How I built an MCP server that lets AI assistants interact with Azure Logic Apps."

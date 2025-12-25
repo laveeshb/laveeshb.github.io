@@ -22,7 +22,8 @@ layout: default
         <h2>Recent Posts</h2>
         {% if site.posts.size > 0 %}
         <div class="posts-list">
-            {% for post in site.posts limit:3 %}
+            {% assign sorted_posts = site.posts | sort: "order" | reverse %}
+            {% for post in sorted_posts limit:3 %}
             <article class="post-preview">
                 <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
                 <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time>
