@@ -1,0 +1,85 @@
+/*! Custom Giscus theme to match site's neutral grey */
+
+main {
+  --color-canvas-default: #f5f5f5;
+  --color-canvas-subtle: #e5e5e5;
+  --color-canvas-inset: #d4d4d4;
+  --color-border-default: #c4c4c4;
+  --color-border-muted: #d4d4d4;
+
+  --color-fg-default: #171717;
+  --color-fg-muted: #525252;
+  --color-fg-subtle: #737373;
+
+  --color-neutral-muted: rgba(120, 120, 120, 0.2);
+  --color-neutral-subtle: rgba(120, 120, 120, 0.1);
+
+  --color-accent-fg: #2563eb;
+  --color-accent-emphasis: #1d4ed8;
+  --color-accent-muted: rgba(37, 99, 235, 0.4);
+  --color-accent-subtle: rgba(37, 99, 235, 0.1);
+
+  --color-btn-text: #171717;
+  --color-btn-bg: #e5e5e5;
+  --color-btn-border: #c4c4c4;
+  --color-btn-hover-bg: #d4d4d4;
+  --color-btn-hover-border: #b0b0b0;
+
+  --color-btn-primary-text: #fff;
+  --color-btn-primary-bg: #2563eb;
+  --color-btn-primary-border: #1d4ed8;
+  --color-btn-primary-hover-bg: #1d4ed8;
+  --color-btn-primary-hover-border: #1e40af;
+
+  color-scheme: light;
+}
+
+main .gsc-comment-box {
+  background-color: var(--color-canvas-default);
+  border-color: var(--color-border-default);
+}
+
+main .gsc-header {
+  padding-bottom: 0.5rem;
+}
+
+main .gsc-comments {
+  gap: 1rem;
+}
+
+main .gsc-comment {
+  background-color: var(--color-canvas-default);
+  border: 1px solid var(--color-border-default);
+  border-radius: 8px;
+}
+
+main .gsc-reactions-button {
+  background-color: var(--color-canvas-subtle);
+  border-color: var(--color-border-default);
+}
+
+main .gsc-reactions-button:hover {
+  background-color: var(--color-canvas-inset);
+}
+
+main .gsc-social-reaction-summary-item {
+  background-color: var(--color-canvas-subtle);
+  border-color: var(--color-border-default);
+}
+
+main .gsc-reply-box {
+  background-color: var(--color-canvas-default);
+  border-color: var(--color-border-default);
+  border-radius: 8px;
+}
+
+main textarea {
+  background-color: var(--color-canvas-default);
+  border-color: var(--color-border-default);
+  color: var(--color-fg-default);
+}
+
+main textarea:focus {
+  border-color: var(--color-accent-fg);
+  box-shadow: 0 0 0 2px var(--color-accent-subtle);
+}
