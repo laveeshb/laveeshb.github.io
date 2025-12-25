@@ -11,6 +11,15 @@ I built an <a href="https://github.com/laveeshb/logicapps-mcp" target="_blank">M
 
 Here's how the server works and some design decisions along the way.
 
+**Contents:**
+- [The Architecture](#the-architecture)
+- [Tool Registration](#tool-registration)
+- [Authentication Without SDKs](#authentication-without-sdks)
+- [Calling Azure Resource Manager](#calling-azure-resource-manager)
+- [Handling Both SKUs](#handling-both-skus)
+- [What Can You Do With It?](#what-can-you-do-with-it)
+- [Try It](#try-it)
+
 ## The Architecture
 
 <div class="architecture-diagram">

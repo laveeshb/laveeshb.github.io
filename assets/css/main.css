@@ -466,6 +466,34 @@ h2 {
     color: var(--text-muted);
 }
 
+.post-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+}
+
+.post-content th,
+.post-content td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border: 1px solid var(--border);
+}
+
+.post-content th {
+    background: var(--bg-card);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.post-content td {
+    color: var(--text-secondary);
+}
+
+.post-content tr:nth-child(even) td {
+    background: var(--bg-secondary);
+}
+
 .post-tags {
     margin-top: 2rem;
     padding-top: 1.5rem;

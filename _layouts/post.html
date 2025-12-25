@@ -6,13 +6,6 @@ layout: default
         <h1 class="post-title">{{ page.title }}</h1>
         <div class="post-meta">
             <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
-            {% if page.categories.size > 0 %}
-            <span class="post-categories">
-                {% for category in page.categories %}
-                <span class="category">{{ category }}</span>
-                {% endfor %}
-            </span>
-            {% endif %}
             {% if page.reading_time %}
             <span class="reading-time">{{ page.reading_time }} min read</span>
             {% endif %}
@@ -52,7 +45,7 @@ layout: default
             data-reactions-enabled="1"
             data-emit-metadata="0"
             data-input-position="bottom"
-            data-theme="dark"
+            data-theme="{{ site.url }}/assets/css/giscus-custom.css"
             data-lang="en"
             data-loading="lazy"
             crossorigin="anonymous"
