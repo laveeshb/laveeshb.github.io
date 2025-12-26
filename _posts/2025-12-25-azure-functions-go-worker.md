@@ -22,24 +22,15 @@ Here's how it works and why I chose this approach.
 
 ## Why Custom Handlers
 
-Azure Functions officially supports languages like C#, JavaScript, Python, and Java. For Go, there are two options:
+Azure Functions officially supports languages like C#, JavaScript, Python, and Java. For Go, the recommended approach is **Custom Handlers** — the host starts your HTTP server and forwards requests.
 
-1. **Custom Handlers** — The host starts your HTTP server and forwards requests
-2. **Native Worker** — Implement the gRPC protocol used by official workers
-
-I chose Custom Handlers because:
+Why this works well:
 
 - **No SDK required** — Use standard `net/http`, the same code runs anywhere
-- **Simpler architecture** — No gRPC, no protobuf, no code generation
-- **Easier debugging** — Test locally with `go run` or any HTTP client
+- **Simple architecture** — Just an HTTP server, nothing special
+- **Easy debugging** — Test locally with `go run` or any HTTP client
 - **Production ready** — Microsoft officially supports and maintains this pattern
-
-| Aspect | Custom Handlers | Native Worker |
-|--------|-----------------|---------------|
-| Protocol | HTTP | gRPC streaming |
-| Dependencies | None (stdlib) | gRPC + protobuf |
-| Local testing | Any HTTP client | Requires host |
-| Maintenance | Stable API | Must track proto changes |
+- **Portable** — Your code isn't tied to Azure, it's just a Go web server
 
 ## The Architecture
 
