@@ -1,11 +1,11 @@
 ---
 layout: post
-title: "Building Azure Functions in Go with Custom Handlers"
+title: "Building Azure Functions in Go"
 date: 2025-12-25
 order: 5
 categories: [azure]
-tags: [azure-functions, go, serverless, custom-handlers]
-excerpt: "Write Azure Functions in Go using the Custom Handler pattern — no SDK required, just standard net/http."
+tags: [azure-functions, go, serverless]
+excerpt: "Write Azure Functions in Go — no SDK required, just standard net/http."
 ---
 
 I've been exploring how to run <a href="https://github.com/laveeshb/azure-functions-go-worker" target="_blank">Azure Functions in Go</a> using the <a href="https://learn.microsoft.com/azure/azure-functions/functions-custom-handlers" target="_blank">Custom Handler</a> pattern. No special SDK, no code generation — just standard Go with `net/http`.
@@ -13,23 +13,23 @@ I've been exploring how to run <a href="https://github.com/laveeshb/azure-functi
 Here's how it works.
 
 **Contents:**
-- [Why Custom Handlers](#why-custom-handlers)
+- [Why This Approach](#why-this-approach)
 - [The Architecture](#the-architecture)
 - [Writing a Function](#writing-a-function)
 - [The QR Generator Sample](#the-qr-generator-sample)
 - [Deploying to Azure](#deploying-to-azure)
 - [Try It](#try-it)
 
-## Why Custom Handlers
+## Why This Approach
 
-Azure Functions officially supports languages like C#, JavaScript, Python, and Java. For Go, the recommended approach is **Custom Handlers** — the host starts your HTTP server and forwards requests.
+Azure Functions has built-in support for languages like C#, JavaScript, Python, and Java. For Go, the recommended approach is **Custom Handlers** — the host starts your HTTP server and forwards requests.
 
 Why this works well:
 
 - **No SDK required** — Use standard `net/http`, the same code runs anywhere
 - **Simple architecture** — Just an HTTP server, nothing special
 - **Easy debugging** — Test locally with `go run` or any HTTP client
-- **Production ready** — Microsoft officially supports and maintains this pattern
+- **Production ready** — Custom Handlers are a documented, stable feature
 - **Portable** — Your code isn't tied to Azure, it's just a Go web server
 
 ## The Architecture
