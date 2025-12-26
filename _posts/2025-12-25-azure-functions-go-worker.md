@@ -10,7 +10,7 @@ excerpt: "Write Azure Functions in Go using the Custom Handler pattern — no SD
 
 I've been exploring how to run <a href="https://github.com/laveeshb/azure-functions-go-worker" target="_blank">Azure Functions in Go</a> using the <a href="https://learn.microsoft.com/azure/azure-functions/functions-custom-handlers" target="_blank">Custom Handler</a> pattern. No special SDK, no code generation — just standard Go with `net/http`.
 
-Here's how it works and why I chose this approach.
+Here's how it works.
 
 **Contents:**
 - [Why Custom Handlers](#why-custom-handlers)
@@ -198,4 +198,4 @@ go build -o handler .
 func start
 ```
 
-The code is on <a href="https://github.com/laveeshb/azure-functions-go-worker" target="_blank">GitHub</a>. The Custom Handler pattern works with any language — the same approach works for Rust, Swift, or anything that can serve HTTP.
+The code is on <a href="https://github.com/laveeshb/azure-functions-go-worker" target="_blank">GitHub</a>.
