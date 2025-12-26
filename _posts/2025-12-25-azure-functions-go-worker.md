@@ -40,7 +40,7 @@ The Azure Functions Host starts your Go binary and forwards HTTP requests:
 Internet → Azure Functions Host → Your Go Binary (net/http server)
 ```
 
-Your binary reads the port from an environment variable and serves requests:
+Your binary reads the port from an environment variable and serves requests (<a href="https://github.com/laveeshb/azure-functions-go-worker/blob/main/samples/hello-world/src/main.go" target="_blank">main.go</a>):
 
 ```go
 func main() {
@@ -57,7 +57,7 @@ func main() {
 }
 ```
 
-The `host.json` tells Azure Functions to use your binary as a Custom Handler:
+The <a href="https://github.com/laveeshb/azure-functions-go-worker/blob/main/samples/hello-world/src/host.json" target="_blank">host.json</a> tells Azure Functions to use your binary as a Custom Handler:
 
 ```json
 {
@@ -93,7 +93,7 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-Each function needs a `function.json` that defines its trigger:
+Each function needs a <a href="https://github.com/laveeshb/azure-functions-go-worker/blob/main/samples/hello-world/src/Hello/function.json" target="_blank">function.json</a> that defines its trigger:
 
 ```json
 {
@@ -119,7 +119,7 @@ That's it. Standard Go HTTP handlers, standard JSON responses.
 
 ## The QR Generator Sample
 
-The repo includes a complete QR code generator with a web UI:
+The repo includes a <a href="https://github.com/laveeshb/azure-functions-go-worker/tree/main/samples/qr-generator" target="_blank">complete QR code generator</a> with a web UI (<a href="https://github.com/laveeshb/azure-functions-go-worker/blob/main/samples/qr-generator/main.go" target="_blank">main.go</a>):
 
 ```go
 func handleGenerate(w http.ResponseWriter, r *http.Request) {
@@ -152,7 +152,7 @@ The web UI lets users enter text and see the generated QR code:
 
 ## Deploying to Azure
 
-Each sample includes deployment scripts. For the QR generator:
+Each sample includes deployment scripts (<a href="https://github.com/laveeshb/azure-functions-go-worker/blob/main/samples/qr-generator/deploy.sh" target="_blank">deploy.sh</a>, <a href="https://github.com/laveeshb/azure-functions-go-worker/blob/main/samples/qr-generator/deploy.ps1" target="_blank">deploy.ps1</a>). For the QR generator:
 
 ```bash
 cd samples/qr-generator
