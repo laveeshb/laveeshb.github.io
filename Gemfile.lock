@@ -84,6 +84,7 @@ GEM
 
 PLATFORMS
   ruby
+  x64-mingw-ucrt
 
 DEPENDENCIES
   jekyll (~> 4.3)

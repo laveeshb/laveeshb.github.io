@@ -8,7 +8,7 @@ tags: [azure-functions, go, serverless, custom-handlers]
 excerpt: "Write Azure Functions in Go using the Custom Handler pattern — no SDK required, just standard net/http."
 ---
 
-I built sample <a href="https://github.com/laveeshb/azure-functions-go-worker" target="_blank">Azure Functions in Go</a> using the <a href="https://learn.microsoft.com/azure/azure-functions/functions-custom-handlers" target="_blank">Custom Handler</a> pattern. No special SDK, no code generation — just standard Go with `net/http`.
+I've been exploring how to run <a href="https://github.com/laveeshb/azure-functions-go-worker" target="_blank">Azure Functions in Go</a> using the <a href="https://learn.microsoft.com/azure/azure-functions/functions-custom-handlers" target="_blank">Custom Handler</a> pattern. No special SDK, no code generation — just standard Go with `net/http`.
 
 Here's how it works and why I chose this approach.
 
