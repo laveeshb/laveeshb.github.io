@@ -1,196 +1,201 @@
 ---
 layout: post
-title: "Building a Native Go Worker for Azure Functions"
+title: "Building Azure Functions in Go with Custom Handlers"
 date: 2025-12-25
 order: 5
 categories: [azure]
-tags: [azure-functions, go, grpc, serverless]
-excerpt: "A native Go language worker that brings first-class Go support to Azure Functions via gRPC."
+tags: [azure-functions, go, serverless, custom-handlers]
+excerpt: "Write Azure Functions in Go using the Custom Handler pattern — no SDK required, just standard net/http."
 ---
 
-I built a <a href="https://github.com/laveeshb/azure-functions-go-worker" target="_blank">native Go worker</a> for <a href="https://learn.microsoft.com/azure/azure-functions/functions-overview" target="_blank">Azure Functions</a>. It's an out-of-process worker that speaks the same gRPC protocol as the official Python, Node.js, and Java workers.
+I've been exploring how to run <a href="https://github.com/laveeshb/azure-functions-go-worker" target="_blank">Azure Functions in Go</a> using the <a href="https://learn.microsoft.com/azure/azure-functions/functions-custom-handlers" target="_blank">Custom Handler</a> pattern. No special SDK, no code generation — just standard Go with `net/http`.
 
-Here's how it works and why it matters.
+Here's how it works.
 
 **Contents:**
-- [How It Differs from Custom Handlers](#how-it-differs-from-custom-handlers)
+- [Why Custom Handlers](#why-custom-handlers)
 - [The Architecture](#the-architecture)
-- [The Developer Experience](#the-developer-experience)
-- [How Functions Get Executed](#how-functions-get-executed)
-- [Panic Recovery](#panic-recovery)
+- [Writing a Function](#writing-a-function)
+- [The QR Generator Sample](#the-qr-generator-sample)
+- [Deploying to Azure](#deploying-to-azure)
 - [Try It](#try-it)
 
-## How It Differs from Custom Handlers
+## Why Custom Handlers
 
-Custom Handlers are a supported way to run any language in Azure Functions. The host starts your binary and forwards requests over HTTP. It works well and requires minimal setup.
+Azure Functions officially supports languages like C#, JavaScript, Python, and Java. For Go, the recommended approach is **Custom Handlers** — the host starts your HTTP server and forwards requests.
 
-A native language worker takes a different approach — it connects to the host via gRPC bidirectional streaming, the same protocol used by the official Python, Node.js, and Java workers. One persistent connection handles function loading, invocations, logging, and status checks.
+Why this works well:
 
-| Aspect | Custom Handlers | Native Worker |
-|--------|-----------------|---------------|
-| Protocol | HTTP per request | gRPC streaming |
-| Connection | Per invocation | Single persistent connection |
-| Setup | Minimal | Requires gRPC implementation |
-| Logging | Separate | Integrated via gRPC |
+- **No SDK required** — Use standard `net/http`, the same code runs anywhere
+- **Simple architecture** — Just an HTTP server, nothing special
+- **Easy debugging** — Test locally with `go run` or any HTTP client
+- **Production ready** — Microsoft officially supports and maintains this pattern
+- **Portable** — Your code isn't tied to Azure, it's just a Go web server
 
 ## The Architecture
 
-The worker runs as a separate process and communicates with the Azure Functions Host over gRPC:
+The Azure Functions Host starts your Go binary and forwards HTTP requests:
 
 ```
-Azure Functions Host <──gRPC──> Go Worker <──> Your Functions
+Internet → Azure Functions Host → Your Go Binary (net/http server)
 ```
 
-The host sends messages (init, load function, invoke), and the worker responds. All over a single bidirectional stream.
-
-The core components:
-
-```
-cmd/worker/          # Entry point
-pkg/azfunc/          # Public SDK (what developers use)
-internal/
-  ├── rpc/           # gRPC client and message handlers
-  ├── registry/      # Function registration and execution
-  └── bindings/      # Type conversions (protobuf ↔ Go types)
-```
-
-The gRPC client establishes the connection and routes messages:
+Your binary reads the port from an environment variable and serves requests (<a href="https://github.com/laveeshb/azure-functions-go-worker/blob/main/samples/hello-world/src/main.go" target="_blank">main.go</a>):
 
 ```go
-func (c *Client) processMessages(stream rpc.FunctionRpc_EventStreamClient) error {
-    for {
-        msg, err := stream.Recv()
-        if err != nil {
-            return err
-        }
-
-        var response *rpc.StreamingMessage
-        switch content := msg.Content.(type) {
-        case *rpc.StreamingMessage_WorkerInitRequest:
-            response = c.handlers.HandleWorkerInit(msg.RequestId, content.WorkerInitRequest)
-        case *rpc.StreamingMessage_FunctionLoadRequest:
-            response = c.handlers.HandleFunctionLoad(msg.RequestId, content.FunctionLoadRequest)
-        case *rpc.StreamingMessage_InvocationRequest:
-            response = c.handlers.HandleInvocation(msg.RequestId, content.InvocationRequest)
-        }
-
-        if response != nil {
-            stream.Send(response)
-        }
+func main() {
+    port := os.Getenv("FUNCTIONS_CUSTOMHANDLER_PORT")
+    if port == "" {
+        port = "8080"
     }
+
+    http.HandleFunc("/api/hello", helloHandler)
+    http.HandleFunc("/api/health", healthHandler)
+
+    log.Printf("Starting server on port %s", port)
+    log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 ```
 
-## The Developer Experience
+The <a href="https://github.com/laveeshb/azure-functions-go-worker/blob/main/samples/hello-world/src/host.json" target="_blank">host.json</a> tells Azure Functions to use your binary as a Custom Handler:
 
-Writing a function looks like this:
+```json
+{
+  "version": "2.0",
+  "customHandler": {
+    "description": {
+      "defaultExecutablePath": "handler"
+    },
+    "enableForwardingHttpRequest": true
+  }
+}
+```
+
+With `enableForwardingHttpRequest: true`, the host passes through HTTP requests directly — your Go code sees standard `http.Request` and `http.ResponseWriter`.
+
+## Writing a Function
+
+A simple hello function:
 
 ```go
-package main
-
-import (
-    "github.com/laveeshb/azure-functions-go-worker/pkg/azfunc"
-)
-
-func init() {
-    azfunc.RegisterHttpFunction("hello", helloHandler)
-}
-
-func helloHandler(ctx *azfunc.Context, req *azfunc.HttpRequest) (*azfunc.HttpResponse, error) {
-    name := req.Query.Get("name")
+func helloHandler(w http.ResponseWriter, r *http.Request) {
+    name := r.URL.Query().Get("name")
     if name == "" {
         name = "World"
     }
 
-    ctx.Log("Processing request for: %s", name)
-
-    return azfunc.OK(map[string]string{
-        "message": "Hello, " + name + "!",
-    }), nil
-}
-
-func main() {
-    azfunc.Start()
-}
-```
-
-Functions register themselves in `init()`, which runs before `main()`. The SDK hides all the gRPC and protobuf complexity — developers work with familiar Go types.
-
-Helper functions make common responses concise:
-
-```go
-return azfunc.OK(data)                    // 200
-return azfunc.Created(data)               // 201
-return azfunc.BadRequest("invalid input") // 400
-return azfunc.NotFound("not found")       // 404
-return azfunc.InternalServerError(err)    // 500
-```
-
-## How Functions Get Executed
-
-When the host invokes a function:
-
-1. Host sends `InvocationRequest` with trigger data
-2. Worker looks up the registered handler
-3. Bindings convert protobuf `TypedData` to Go types
-4. Handler executes with panic recovery
-5. Response converts back to protobuf
-6. Worker sends `InvocationResponse`
-
-The registry handles lookup and execution:
-
-```go
-func (r *Registry) Execute(functionID string, req *rpc.InvocationRequest) *rpc.InvocationResponse {
-    r.mu.RLock()
-    entry, exists := r.functions[functionID]
-    r.mu.RUnlock()
-
-    if !exists {
-        return errorResponse(req.InvocationId, "function not found")
+    response := map[string]string{
+        "message": fmt.Sprintf("Hello, %s!", name),
     }
 
-    // Execute with panic recovery
-    result, err := r.executeWithRecovery(entry, req)
-    if err != nil {
-        return errorResponse(req.InvocationId, err.Error())
-    }
-
-    return successResponse(req.InvocationId, result)
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(response)
 }
 ```
 
-## Panic Recovery
+Each function needs a <a href="https://github.com/laveeshb/azure-functions-go-worker/blob/main/samples/hello-world/src/Hello/function.json" target="_blank">function.json</a> that defines its trigger:
 
-Go panics shouldn't crash the worker. Each invocation is wrapped:
+```json
+{
+  "bindings": [
+    {
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": ["get", "post"],
+      "route": "hello"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "$return"
+    }
+  ]
+}
+```
+
+That's it. Standard Go HTTP handlers, standard JSON responses.
+
+## The QR Generator Sample
+
+The repo includes a <a href="https://github.com/laveeshb/azure-functions-go-worker/tree/main/samples/qr-generator" target="_blank">complete QR code generator</a> with a web UI (<a href="https://github.com/laveeshb/azure-functions-go-worker/blob/main/samples/qr-generator/main.go" target="_blank">main.go</a>):
 
 ```go
-func (r *Registry) executeWithRecovery(entry *functionEntry, req *rpc.InvocationRequest) (result interface{}, err error) {
-    defer func() {
-        if rec := recover(); rec != nil {
-            stack := debug.Stack()
-            err = fmt.Errorf("panic: %v\n%s", rec, stack)
-        }
-    }()
+func handleGenerate(w http.ResponseWriter, r *http.Request) {
+    if r.Method == http.MethodGet {
+        // Serve the web UI
+        w.Header().Set("Content-Type", "text/html")
+        fmt.Fprint(w, landingPageHTML)
+        return
+    }
 
-    return entry.handler(ctx, httpReq)
+    // POST: Generate QR code
+    var req GenerateRequest
+    json.NewDecoder(r.Body).Decode(&req)
+
+    png, _ := qrcode.Encode(req.Content, qrcode.Medium, req.Size)
+
+    json.NewEncoder(w).Encode(GenerateResponse{
+        Image:   base64.StdEncoding.EncodeToString(png),
+        Content: req.Content,
+        Size:    req.Size,
+    })
 }
 ```
 
-A panic in one function returns an error response for that invocation. The worker continues handling other requests.
+The web UI lets users enter text and see the generated QR code:
 
-## Try It
+- `GET /generate` — Interactive web page
+- `POST /generate` — API returns base64-encoded PNG
+- `GET /health` — Health check endpoint
 
-The <a href="https://github.com/laveeshb/azure-functions-go-worker/tree/main/samples/hello-world" target="_blank">hello-world sample</a> includes deployment scripts for Azure. Works on Windows, Mac, or Linux — the scripts cross-compile to Linux for Azure.
+## Deploying to Azure
+
+Each sample includes deployment scripts (<a href="https://github.com/laveeshb/azure-functions-go-worker/blob/main/samples/qr-generator/deploy.sh" target="_blank">deploy.sh</a>, <a href="https://github.com/laveeshb/azure-functions-go-worker/blob/main/samples/qr-generator/deploy.ps1" target="_blank">deploy.ps1</a>). For the QR generator:
 
 ```bash
-git clone https://github.com/laveeshb/azure-functions-go-worker.git
-cd azure-functions-go-worker/samples/hello-world
+cd samples/qr-generator
 
-# Deploy to Azure (creates resource group, storage, function app)
-./deploy.sh
+# Deploy to Azure (creates everything: resource group, storage, function app)
+./deploy.sh -g my-resource-group -l westus2
 
-# Or run locally with Azure Functions Core Tools
+# Or on Windows
+.\deploy.ps1 -ResourceGroupName my-resource-group -Location westus2
+```
+
+The script:
+1. Cross-compiles to Linux (`GOOS=linux GOARCH=amd64`)
+2. Creates Azure resources (resource group, storage account, function app)
+3. Deploys with `func azure functionapp publish`
+
+For local development:
+
+```bash
+# Build
+go build -o handler .
+
+# Run with Azure Functions Core Tools
 func start
 ```
 
-The code is on <a href="https://github.com/laveeshb/azure-functions-go-worker" target="_blank">GitHub</a>. Currently supports HTTP triggers, with Timer and Queue triggers on the roadmap.
+## Try It
+
+Clone the repo and try the samples:
+
+```bash
+git clone https://github.com/laveeshb/azure-functions-go-worker.git
+cd azure-functions-go-worker
+
+# Hello World - basic HTTP function
+cd samples/hello-world/src
+go build -o handler .
+func start
+
+# QR Generator - web UI + API
+cd samples/qr-generator
+go build -o handler .
+func start
+```
+
+The code is on <a href="https://github.com/laveeshb/azure-functions-go-worker" target="_blank">GitHub</a>.
