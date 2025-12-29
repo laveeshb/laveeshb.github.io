@@ -14,13 +14,14 @@ The <a href="https://github.com/laveeshb/azure-functions-sqs-extension" target="
 - [What's New](#whats-new)
 - [How It Works](#how-it-works)
 - [Installation](#installation)
+- [Authentication](#authentication)
 - [SQS Trigger](#sqs-trigger)
 - [SQS Output Binding](#sqs-output-binding)
 - [Batch Sending with SqsCollector](#batch-sending-with-sqscollector)
 - [FIFO Queue Support](#fifo-queue-support)
 - [Configuration Options](#configuration-options)
 - [Local Development with LocalStack](#local-development-with-localstack)
-- [Source Code](#source-code)
+- [Samples](#samples)
 
 ## What's New
 
@@ -50,7 +51,7 @@ Install the Python package:
 pip install azure-functions-sqs
 ```
 
-Set up your AWS credentials in `local.settings.json`:
+Configure your queue URL in `local.settings.json`:
 
 ```json
 {
@@ -58,10 +59,55 @@ Set up your AWS credentials in `local.settings.json`:
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "python",
-    "AWS_ACCESS_KEY_ID": "your-access-key",
-    "AWS_SECRET_ACCESS_KEY": "your-secret-key",
     "AWS_REGION": "us-east-1",
     "SQS_QUEUE_URL": "https://sqs.us-east-1.amazonaws.com/123456789/my-queue"
+  }
+}
+```
+
+## Authentication
+
+The extension uses the <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/guide/credentials.html" target="_blank">AWS default credential chain</a>, which means you can authenticate without passing credentials directly.
+
+### IAM Roles (Recommended for Production)
+
+For production deployments, use IAM roles — no access keys needed:
+
+```python
+from azure_functions_sqs import SqsTrigger
+
+# No credentials specified - uses IAM role automatically
+trigger = SqsTrigger(
+    queue_url="%SQS_QUEUE_URL%",
+    # Credentials are resolved from:
+    # 1. IAM role attached to the Azure Function (via OIDC federation)
+    # 2. EC2 instance profile (if running on EC2)
+    # 3. ECS task role (if running in ECS)
+    # 4. Environment variables (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+)
+```
+
+To use IAM roles with Azure Functions, set up <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc.html" target="_blank">OIDC federation</a> between Azure AD and AWS IAM. This eliminates the need to manage long-lived credentials.
+
+### Access Keys (For Development/Testing)
+
+For local development or when IAM roles aren't available, you can use access keys:
+
+```python
+trigger = SqsTrigger(
+    queue_url="%SQS_QUEUE_URL%",
+    aws_key_id="%AWS_ACCESS_KEY_ID%",
+    aws_access_key="%AWS_SECRET_ACCESS_KEY%",
+)
+```
+
+Store credentials in `local.settings.json` (never commit to source control):
+
+```json
+{
+  "Values": {
+    "AWS_ACCESS_KEY_ID": "AKIA...",
+    "AWS_SECRET_ACCESS_KEY": "..."
   }
 }
 ```
@@ -79,8 +125,7 @@ from azure_functions_sqs import SqsTrigger, SqsMessage, SqsTriggerOptions
 
 trigger = SqsTrigger(
     queue_url="%SQS_QUEUE_URL%",  # Reads from environment variable
-    aws_key_id="%AWS_ACCESS_KEY_ID%",
-    aws_access_key="%AWS_SECRET_ACCESS_KEY%",
+    # Credentials resolved automatically via IAM role or environment variables
     options=SqsTriggerOptions(
         max_number_of_messages=10,  # Batch size (1-10)
         visibility_timeout=timedelta(seconds=30),  # Message lock timeout
@@ -146,8 +191,7 @@ app = func.FunctionApp()
 
 output = SqsOutput(
     queue_url="%OUTPUT_QUEUE_URL%",
-    aws_key_id="%AWS_ACCESS_KEY_ID%",
-    aws_access_key="%AWS_SECRET_ACCESS_KEY%",
+    # Uses IAM role or environment credentials automatically
 )
 
 @app.function_name("SendToSqs")
@@ -180,8 +224,7 @@ app = func.FunctionApp()
 def batch_send(req: func.HttpRequest) -> func.HttpResponse:
     collector = SqsCollector(
         queue_url="%OUTPUT_QUEUE_URL%",
-        aws_key_id="%AWS_ACCESS_KEY_ID%",
-        aws_access_key="%AWS_SECRET_ACCESS_KEY%",
+        # Uses IAM role or environment credentials automatically
     )
     
     items = req.get_json().get("items", [])
@@ -211,8 +254,6 @@ from azure_functions_sqs import SqsOutput, SqsOutputOptions
 
 fifo_output = SqsOutput(
     queue_url="%FIFO_QUEUE_URL%",  # Must end with .fifo
-    aws_key_id="%AWS_ACCESS_KEY_ID%",
-    aws_access_key="%AWS_SECRET_ACCESS_KEY%",
     options=SqsOutputOptions(
         message_group_id="order-processing",  # Required for FIFO queues
     ),
@@ -243,11 +284,11 @@ def send_to_fifo(req: func.HttpRequest) -> str:
 
 ### Credentials
 
-The extension supports multiple credential sources:
+The extension uses the AWS default credential chain (see [Authentication](#authentication)):
 
-1. **Environment variables** (recommended) — Use `%VAR_NAME%` syntax
-2. **Direct values** — For testing only (not recommended for production)
-3. **IAM Role/Instance Profile** — Leave credentials empty to use AWS default credential chain
+1. **IAM Role** (recommended for production) — No credentials needed, uses OIDC federation or instance profiles
+2. **Environment variables** — Set `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`, reference with `%VAR_NAME%` syntax
+3. **Direct values** — For local testing only (never in production)
 
 ## Local Development with LocalStack
 
@@ -266,8 +307,16 @@ trigger = SqsTrigger(
 
 See the <a href="https://github.com/laveeshb/azure-functions-sqs-extension/tree/main/dotnet/localstack" target="_blank">LocalStack testing guide</a> for Docker setup instructions.
 
-## Source Code
+## Samples
 
-The Python implementation is available in the <a href="https://github.com/laveeshb/azure-functions-sqs-extension/tree/main/python" target="_blank">python directory</a> of the repository. Check out the <a href="https://github.com/laveeshb/azure-functions-sqs-extension/tree/main/python/samples" target="_blank">samples</a> for complete working examples.
+Complete working examples are available in the repository:
+
+| Sample | Description |
+|--------|-------------|
+| <a href="https://github.com/laveeshb/azure-functions-sqs-extension/blob/main/python/samples/function_app.py" target="_blank">function_app.py</a> | Full function app with trigger, output binding, batch sending, and FIFO queue examples |
+| <a href="https://github.com/laveeshb/azure-functions-sqs-extension/blob/main/python/samples/host.json" target="_blank">host.json</a> | Azure Functions host configuration |
+| <a href="https://github.com/laveeshb/azure-functions-sqs-extension/blob/main/python/samples/local.settings.json" target="_blank">local.settings.json</a> | Local development settings template |
+
+The full Python implementation is in the <a href="https://github.com/laveeshb/azure-functions-sqs-extension/tree/main/python" target="_blank">python directory</a>.
 
 Questions or feedback? Open an issue on <a href="https://github.com/laveeshb/azure-functions-sqs-extension" target="_blank">GitHub</a>!
