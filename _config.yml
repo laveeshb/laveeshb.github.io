@@ -1,6 +1,6 @@
 # Site settings
 title: Laveesh Bansal
-description: Software Architect building distributed systems at scale
+description: Software Architect at GitHub, leading GitHub Enterprise Cloud Data Residency
 url: "https://laveeshbansal.com"
 baseurl: ""
 
@@ -9,7 +9,7 @@ author:
   name: Laveesh Bansal
   email: ""
   avatar: "https://avatars.githubusercontent.com/u/11548738?v=4"
-  bio: "Software Architect at Microsoft. Building distributed systems at scale."
+  bio: "Software Architect at GitHub, leading the GitHub Enterprise Cloud Data Residency (GHEC-DR) team."
   location: "Seattle, WA"
   links:
     - label: "GitHub"
