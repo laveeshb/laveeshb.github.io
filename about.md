@@ -8,15 +8,15 @@ permalink: /about/
     <header class="about-header">
         <img src="{{ site.author.avatar }}" alt="{{ site.author.name }}" class="avatar-large">
         <h1>{{ site.author.name }}</h1>
-        <p class="role">Software Architect at Microsoft</p>
+        <p class="role">Software Architect @ GitHub — Leading GHEC Data Residency</p>
     </header>
 
     <div class="about-content">
-        <p>I spend my days designing distributed systems that (hopefully) don't fall over at scale. Currently focused on Azure Logic Apps and AI platform at Microsoft, where I've been solving cloud infrastructure puzzles for over a decade.</p>
+        <p>I spend my days designing distributed systems that (hopefully) don't fall over at scale. These days I lead the GitHub Enterprise Cloud Data Residency (GHEC-DR) team at GitHub. Before that, I spent over a decade at Microsoft on Azure — most recently Logic Apps and the AI platform.</p>
         
         <p>Before Logic Apps, I worked on Azure Resource Manager — the layer that handles every deployment you've ever clicked "Create" on in Azure. These days, I'm more interested in how AI is reshaping cloud infrastructure.</p>
         
-        <p>When I'm not debugging production or arguing about system design, I tinker with open source projects — mostly around Azure extensibility and local-first AI assistants.</p>
+        <p>When I'm not debugging production or arguing about system design, I tinker with open source projects — Azure extensibility, developer tooling, and a deep-dive documentation project on Linux kernel internals.</p>
         
         <p>I studied at UT Dallas and NIT Trichy back when "cloud" still mostly meant weather.</p>
         
@@ -24,6 +24,11 @@ permalink: /about/
 
         <h2>Projects</h2>
         <div class="project-grid">
+            <a href="https://kernel-internals.org" target="_blank" rel="noopener noreferrer" class="project-card">
+                <h3>Linux Kernel Internals</h3>
+                <p>Deep dives into Linux kernel design decisions and the rationale behind them</p>
+                <span class="tech-tag">MkDocs</span>
+            </a>
             <a href="https://github.com/laveeshb/logicapps-mcp" target="_blank" rel="noopener noreferrer" class="project-card">
                 <h3>Logic Apps MCP Server</h3>
                 <p>MCP server for Azure Logic Apps</p>
@@ -33,11 +38,6 @@ permalink: /about/
                 <h3>Azure Functions SQS Extension</h3>
                 <p>Multi-language Azure Functions bindings for Amazon SQS</p>
                 <span class="tech-tag">C#</span>
-            </a>
-            <a href="https://github.com/laveeshb/krakenly" target="_blank" rel="noopener noreferrer" class="project-card">
-                <h3>Krakenly</h3>
-                <p>A fully local, privacy-focused AI assistant that runs entirely on your machine</p>
-                <span class="tech-tag">Python</span>
             </a>
         </div>
 
