@@ -16,7 +16,7 @@ So think of the site less as an authoritative reference and more as careful note
 
 When I started reading, the material felt oddly polarized. <a href="https://docs.kernel.org" target="_blank">docs.kernel.org</a> is authoritative but tells you *what* and *how* — it's reference documentation, not a narrative. <a href="https://lwn.net" target="_blank">LWN</a> is the gold standard for the *why*, but it's news-shaped — tied to a particular patch series — and not organized as something you can sit down and browse by subsystem.
 
-What I kept wishing for was a current, organized place that explained the *reasoning*: the trade-offs, the alternatives that got rejected, the mailing-list arguments that produced the design we ended up with. I couldn't find it, so I started assembling it as I learned. It's meant to complement docs.kernel.org, not compete with it.
+What I kept wishing for was a current, organized place that explained the *reasoning*: the trade-offs, the alternatives that got rejected, the mailing-list arguments that produced the design we ended up with. I couldn't find it, so I started assembling it as I learned. It's meant to complement <a href="https://docs.kernel.org" target="_blank">docs.kernel.org</a>, not compete with it.
 
 ## Where it stands today
 
@@ -29,7 +29,7 @@ Two principles I try to hold to — precisely *because* I'm not the expert in th
 
 ## What I try to do on a page
 
-The goal isn't to list the right structs and functions — docs.kernel.org and the source already do that better than I could. What I aim for is an honest attempt at *why*. Take <a href="https://kernel-internals.org/mm/gup/" target="_blank"><code>get_user_pages</code></a>: the part I found worth understanding wasn't the function signature, it was why the kernel ended up with two nearly-identical APIs, why an ordinary reference count couldn't express "this page is being used for DMA," and how that ambiguity led to a long tail of subtle bugs. I don't always get this right, and some pages are thinner or shakier than others.
+The goal isn't to list the right structs and functions — <a href="https://docs.kernel.org" target="_blank">docs.kernel.org</a> and the source already do that better than I could. What I aim for is an honest attempt at *why*. Take <a href="https://kernel-internals.org/mm/gup/" target="_blank"><code>get_user_pages</code></a>: the part I found worth understanding wasn't the function signature, it was why the kernel ended up with two nearly-identical APIs, why an ordinary reference count couldn't express "this page is being used for DMA," and how that ambiguity led to a long tail of subtle bugs. I don't always get this right, and some pages are thinner or shakier than others.
 
 ## Where it's going
 
