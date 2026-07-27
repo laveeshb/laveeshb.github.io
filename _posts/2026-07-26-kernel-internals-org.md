@@ -20,7 +20,7 @@ What I kept wishing for was a current, organized place that explained the *reaso
 
 ## Where it stands today
 
-Today it spans roughly 375 pages across 28 subsystems, built as a static <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank">MkDocs</a> site. Memory management is the deepest part (the page allocator, reclaim, folios, huge pages, `get_user_pages`, the kernel's address-space layout), with broader coverage of the scheduler, networking, the architecture layer, io_uring, locking, filesystems, and more.
+Today it spans roughly 375 pages across 28 subsystems, built as a static MkDocs site. Memory management is the deepest part (the page allocator, reclaim, folios, huge pages, `get_user_pages`, the kernel's address-space layout), with broader coverage of the scheduler, networking, the architecture layer, io_uring, locking, filesystems, and more.
 
 Two principles I try to hold to — precisely *because* I'm not the expert in the room:
 
