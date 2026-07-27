@@ -5,10 +5,10 @@ date: 2026-07-26
 order: 8
 categories: [linux]
 tags: [linux-kernel, documentation, open-source, learning-in-public]
-excerpt: "A side project where I try to make sense of why the Linux kernel is built the way it is. I'm not a kernel developer — this is learning in public, with everything traced back to primary sources."
+excerpt: "A side project where I make sense of why the Linux kernel is built the way it is. I'm a very new kernel contributor — one small patch in — learning the rest in public, with everything traced to primary sources."
 ---
 
-Let me get the disclaimer out of the way first: I'm not a kernel developer. I work on cloud infrastructure, and the Linux kernel has always been the layer I *depend on* without really understanding. <a href="https://kernel-internals.org" target="_blank">kernel-internals.org</a> is my attempt to fix that — for myself, first — by writing down the *why* behind the kernel's design as I dig into it, and organizing it so the next curious person doesn't have to start from scratch.
+Let me calibrate expectations first: I'm a *very* new kernel contributor. Earlier this year I landed my first patch — a small <a href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=68140cf5076bcaee4c40033036b4b31f95dcb063" target="_blank">writeback fix</a> for a busy-loop that could peg a CPU at 100% — and mostly it taught me how much of the kernel I'd been depending on without really understanding. <a href="https://kernel-internals.org" target="_blank">kernel-internals.org</a> is how I'm working through the rest: writing down the *why* behind the kernel's design as I dig into it, and organizing it so the next curious person doesn't have to start from scratch.
 
 So think of the site less as an authoritative reference and more as careful notes, taken in public. This post is about why I started it and where it stands.
 
