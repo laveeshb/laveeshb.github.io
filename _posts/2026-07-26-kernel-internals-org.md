@@ -5,7 +5,7 @@ date: 2026-07-26
 order: 8
 categories: [linux]
 tags: [linux-kernel, documentation, open-source, learning-in-public]
-excerpt: "A side project where I make sense of why the Linux kernel is built the way it is. I'm new to kernel development, and working through the why is a big part of how I'm learning — with everything traced to primary sources."
+excerpt: "Making sense of why the Linux kernel is built the way it is. I'm new to kernel development, and working through the why is a big part of how I'm learning — everything traced to primary sources."
 ---
 
 Let me calibrate expectations first: I'm new to kernel development. Getting into it recently made me realize how much of the kernel I'd been depending on without really understanding — and that's a big part of why I started <a href="https://kernel-internals.org" target="_blank">kernel-internals.org</a>. It's where I work through the *why* behind the kernel's design as I dig into it, and organize it so the next curious person doesn't have to start from scratch.
