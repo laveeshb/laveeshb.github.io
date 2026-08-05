@@ -1,7 +1,7 @@
 # Site settings
 title: Laveesh Bansal
 description: Software Architect at GitHub, leading GitHub Enterprise Cloud Data Residency
-url: "https://laveeshbansal.com"
+url: "https://laveeshb.com"
 baseurl: ""
 
 # Author
@@ -66,3 +66,4 @@ defaults:
       type: "pages"
     values:
       layout: "default"
+
